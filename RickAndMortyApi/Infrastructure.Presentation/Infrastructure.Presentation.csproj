@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
@@ -17,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core.Services.Abstractions\Core.Services.Abstractions.csproj" />
+    <ProjectReference Include="..\Core.Services\Core.Services.csproj" />
+    <ProjectReference Include="..\Infrastructure.Clients\Infrastructure.Clients.csproj" />
   </ItemGroup>
 
 </Project>

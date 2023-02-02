@@ -1,3 +1,7 @@
+using Core.Contracts.Mapping;
+using Core.Services;
+using Core.Services.Abstractions;
+using Infrastructure.Clients;
 
 namespace Infrastructure.Presentation
 {
@@ -7,16 +11,23 @@ namespace Infrastructure.Presentation
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddAutoMapper(typeof(AutomapperProfile));
+
+            builder.Services.AddScoped<IHttpClient, RickAndMortyClient>();
+
+            builder.Services.AddScoped<ICharacterService, CharacterService>();
+            builder.Services.AddScoped<ILocationService, LocationService>();
+            builder.Services.AddScoped<IEpisodeService, EpisodeService>();
+            builder.Services.AddScoped<IConverterService, ConverterService>();
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
+
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -26,7 +37,6 @@ namespace Infrastructure.Presentation
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
