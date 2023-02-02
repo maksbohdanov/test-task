@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  infrastructure.presentation:
+    image: ${DOCKER_REGISTRY-}infrastructurepresentation
+    build:
+      context: .
+      dockerfile: Infrastructure.Presentation\Dockerfile
