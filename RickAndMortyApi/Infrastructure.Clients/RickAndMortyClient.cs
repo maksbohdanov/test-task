@@ -10,7 +10,7 @@ namespace Infrastructure.Clients
 
         public RickAndMortyClient()
         {
-            Url = "https://rickandmortyapi.com/api";
+            Url = "https://rickandmortyapi.com/api/";
             HttpClient = new HttpClient()
             {
                 BaseAddress = new Uri(Url)
