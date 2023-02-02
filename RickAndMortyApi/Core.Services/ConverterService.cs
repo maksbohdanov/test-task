@@ -22,10 +22,25 @@ namespace Core.Services
             _mapper = mapper;
         }
 
+        public async Task<bool> CheckIfPersonIsInEpisode(PresenceRequest request)
+        {
+            var episode = await _episodeService.GetEpisodeByName(request.EpisodeName);
+
+            var character = (await _characterService.GetCharactersByName(request.PersonName))
+                ?.FirstOrDefault();
+
+            var charactersIds = episode?.Characters.Select(x => GetIdFromUrl(x));
+
+            if (charactersIds == null)
+                return false;
+            else
+                return charactersIds.Contains(character?.Id.ToString());
+        }
+
         public async Task<IEnumerable<CharacterModel>> GetCharactersByName(string name)
         {
             var characters = await _characterService.GetCharactersByName(name);
-            if(characters != null  && characters.Any())
+            if (characters != null && characters.Any())
             {
                 foreach (var character in characters)
                 {
@@ -37,7 +52,6 @@ namespace Core.Services
             }
             else
                 throw new NotFoundException("Character with specified name was not found.");
-
         }
 
         private async Task<Location?> GetLocationByUrl(string? url)
@@ -45,8 +59,10 @@ namespace Core.Services
             if (string.IsNullOrEmpty(url))
                 return new Location();
 
-            var locationId = url.Substring(url.LastIndexOf('/') + 1);
+            var locationId = GetIdFromUrl(url);
             return await _locationService.GetLocationById(locationId);
         }
+
+        private static string GetIdFromUrl(string url) => url.Substring(url.LastIndexOf('/') + 1);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Core.Contracts.Models;
 using Core.Services.Abstractions;
+using Infrastructure.Presentation.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Infrastructure.Presentation.Controllers
@@ -17,8 +18,7 @@ namespace Infrastructure.Presentation.Controllers
 
         [HttpGet("person")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CharacterModel>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
         public async Task<IActionResult> GetByName([FromQuery] string name)
         {
             var characters = await _converterService.GetCharactersByName(name);
@@ -28,14 +28,12 @@ namespace Infrastructure.Presentation.Controllers
 
         [HttpPost("check-person")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
-        public async Task<IActionResult> CheckPersonInEpisode([FromBody] PresenceRequest model)
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+        public async Task<IActionResult> CheckPersonInEpisode([FromBody] PresenceRequest request)
         {
-            throw new NotImplementedException();
-            //var result = await _converterService.GetCharactersByName(name);
+            var result = await _converterService.CheckIfPersonIsInEpisode(request);
 
-            //return Ok(result);
+            return Ok(result);
         }
     }
 }
