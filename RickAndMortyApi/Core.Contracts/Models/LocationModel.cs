@@ -2,8 +2,8 @@
 {
     public class LocationModel
     {
-        public string Name { get; set; } = "unknown";
-        public string Type { get; set; } = "unknown";
-        public string Dimension { get; set; } = "unknown";
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string Dimension { get; set; } = string.Empty;
     }
 }

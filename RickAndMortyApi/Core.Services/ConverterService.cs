@@ -45,7 +45,7 @@ namespace Core.Services
             if (string.IsNullOrEmpty(url))
                 return new Location();
 
-            var locationId = url.Substring(url.LastIndexOf('/'));
+            var locationId = url.Substring(url.LastIndexOf('/') + 1);
             return await _locationService.GetLocationById(locationId);
         }
     }
