@@ -2,6 +2,7 @@ using Core.Contracts.Mapping;
 using Core.Services;
 using Core.Services.Abstractions;
 using Infrastructure.Clients;
+using Infrastructure.Presentation.Middlewares;
 
 namespace Infrastructure.Presentation
 {
@@ -20,6 +21,8 @@ namespace Infrastructure.Presentation
             builder.Services.AddScoped<IEpisodeService, EpisodeService>();
             builder.Services.AddScoped<IConverterService, ConverterService>();
 
+            builder.Services.AddTransient<ErrorHandlerMiddleware>();
+
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
@@ -37,6 +40,8 @@ namespace Infrastructure.Presentation
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.MapControllers();
 
