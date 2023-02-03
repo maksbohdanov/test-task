@@ -1,0 +1,88 @@
+USE Airport;
+GO
+
+CREATE TABLE Company
+(
+	id INT IDENTITY(1,1),
+    name VARCHAR(50) NOT NULL,
+    CONSTRAINT PK_COMPANY PRIMARY KEY(id)
+);
+
+CREATE TABLE Seat_Type
+(
+	id INT IDENTITY(1,1),
+    label VARCHAR(50) NOT NULL,
+    CONSTRAINT PK_SEAT_TYPE PRIMARY KEY(id)
+);
+
+CREATE TABLE Seat
+(
+	id INT IDENTITY(1,1),
+    quantity INT NOT NULL,
+    seat_type_id INT,    
+    CONSTRAINT PK_SEAT PRIMARY KEY(id),
+    CONSTRAINT FK_SEAT_SEAT_TYPE FOREIGN KEY(seat_type_id) REFERENCES Seat_Type(id)
+);
+
+CREATE TABLE Plane
+(
+	id INT IDENTITY(1,1),
+    name VARCHAR(50) NOT NULL,
+    company_id INT,
+    seat_id INT,
+    CONSTRAINT PK_PLANE PRIMARY KEY(id),
+    CONSTRAINT FK_PLANE_COMPANY FOREIGN KEY(company_id) REFERENCES Company(id),
+    CONSTRAINT FK_PLANE_SEAT FOREIGN KEY(seat_id) REFERENCES Seat(id)
+);
+
+CREATE TABLE City
+(
+	id INT IDENTITY(1,1),
+    name VARCHAR(50) NOT NULL,
+    CONSTRAINT PK_CITY PRIMARY KEY(id)
+);
+
+CREATE TABLE Status
+(
+	id INT IDENTITY(1,1),
+    label VARCHAR(50) NOT NULL,
+    CONSTRAINT PK_STATUS PRIMARY KEY(id)
+);
+
+CREATE TABLE Race
+(
+	id INT IDENTITY(1,1),
+    price FLOAT NOT NULL,
+    date_time DATETIME NOT NULL,
+    status_id INT,
+    city_id_from INT,
+    city_id_to INT,
+    plane_id INT,
+    CONSTRAINT PK_RACE PRIMARY KEY(id),
+    CONSTRAINT FK_STATUS_RACE FOREIGN KEY(status_id) REFERENCES Status (id),
+    CONSTRAINT FK_CITY_FROM_RACE FOREIGN KEY(city_id_from) REFERENCES City (id),
+	CONSTRAINT FK_CITY_TO_RACE FOREIGN KEY(city_id_to) REFERENCES City (id),
+	CONSTRAINT FK_PLANE_RACE FOREIGN KEY(plane_id) REFERENCES Plane (id),
+    CONSTRAINT CHECK_CITY_FROM_TO CHECK (city_id_from <> city_id_to)
+);
+
+CREATE TABLE Customer
+(
+	id INT IDENTITY(1,1),
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    passport VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    CONSTRAINT PK_CUSTOMER PRIMARY KEY(id)
+);
+
+CREATE TABLE Ticket
+(
+	id INT IDENTITY(1,1),    
+    race_id INT,    
+    customer_id INT,
+    CONSTRAINT PK_TICKET PRIMARY KEY(id),
+    CONSTRAINT FK_RACE_TICKET FOREIGN KEY(race_id) REFERENCES Race (id),
+	CONSTRAINT FK_CUSTOMER_TICKET FOREIGN KEY(customer_id) REFERENCES Customer (id)
+);
